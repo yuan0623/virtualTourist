@@ -7,79 +7,59 @@
 
 import UIKit
 import MapKit
-extension UserDefaults{
-    func setCenterCoordinate(centerCoordinate:CLLocationCoordinate2D?,forKey key:String){
-        var centerCoordinateData: NSData?
-        if let centerCoordinate = centerCoordinate{
-            do {
-                centerCoordinateData = try NSKeyedArchiver.archivedData(withRootObject: centerCoordinate, requiringSecureCoding: false) as NSData?
-                set(centerCoordinateData,forKey: key)
-                print("centerCoordinateData saved")
-            }
-            catch let erro{
-                print("error archiving CLLocationCoordinate2D data",erro)
-            }
-        }
-    }
-    func setCameraZoomRange(cameraZoomRange:MKMapView.CameraZoomRange?,forKey key:String){
-        var cameraZoomRangeData: NSData?
-        if let cameraZoomRange = cameraZoomRange{
-            do {
-                cameraZoomRangeData = try NSKeyedArchiver.archivedData(withRootObject: cameraZoomRange, requiringSecureCoding: false) as NSData?
-                set(cameraZoomRangeData,forKey: key)
-                print("cameraZoomRangeData saved")
-            }
-            catch _{
-                print("error archiving MKMapView.CameraZoomRange data")
-            }
-        }
-    }
-    func getCameraZoomRange()-> MKMapView.CameraZoomRange?{
-        var cameraZoomRange: MKMapView.CameraZoomRange?
-        if let cameraZoomRangeData = data(forKey: "cameraZoomRange"){
-            do{
-                cameraZoomRange = try NSKeyedUnarchiver.unarchivedObject(ofClass: MKMapView.CameraZoomRange.self, from: cameraZoomRangeData)
-            }
-            catch let error{
-                print("error unarchiving cameraZoomRange data", error)
-            }
-        }
-        return cameraZoomRange
-    }
-}
+
 class MapViewController: UIViewController {
     
+ 
     @IBOutlet weak var mapView: MKMapView!
+    var region:MKCoordinateRegion = MKCoordinateRegion()
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         // Do any additional setup after loading the view.
-        if let cameraZoomRange = UserDefaults.standard.getCameraZoomRange(){
-            mapView.cameraZoomRange = cameraZoomRange
-            print("cameraZoomRange is assigned in viewDidLoad")
-        }
+        restoreMapViewState()
     }
+    
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if let cameraZoomRange = UserDefaults.standard.getCameraZoomRange(){
-            mapView.cameraZoomRange = cameraZoomRange
-            print("cameraZoomRange is assigned in viewWillAppear")
-        }
-        
+        restoreMapViewState()
         print("map view appear")
     }
     
+    
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        //var CenterCoordinateDict: [String: Double] = ["lati":mapView.centerCoordinate.latitude,"long":mapView.centerCoordinate.longitude]
-        //UserDefaults.standard.set(CenterCoordinateDict, forKey: "centerCoordinate")
-        //UserDefaults.standard.setCenterCoordinate(centerCoordinate: mapView.centerCoordinate,forKey:"centerCoordinate")
-        UserDefaults.standard.setCameraZoomRange(cameraZoomRange: mapView.cameraZoomRange, forKey: "cameraZoomRange")
-        //UserDefaults.standard.set(mapView.cameraZoomRange,forKey:"zoomRange")
+        saveMapViewState()
+
         print("map view disappear")
 
     }
+    
+    
+    fileprivate func restoreMapViewState() {
+        if let centerCoordinateDict = UserDefaults.standard.dictionary(forKey: "centerCoordinate"){
+            region.center.latitude = centerCoordinateDict["lati"] as! CLLocationDegrees
+            region.center.longitude = centerCoordinateDict["long"] as! CLLocationDegrees
+            print("CenterCoordinate is assigned in viewWillAppear")
+        }
+        if let span = UserDefaults.standard.dictionary(forKey: "span"){
+            region.span.latitudeDelta = span["latiDelta"] as! CLLocationDegrees
+            region.span.longitudeDelta = span["longDelta"] as! CLLocationDegrees
+        }
+        mapView.setRegion(region, animated: true)
+    }
 
+    fileprivate func saveMapViewState() {
+        var centerCoordinateDict: [String: Double] = ["lati":mapView.region.center.latitude,"long":mapView.region.center.longitude]
+        print("center done")
+        var spanDict: [String: Double] = ["latiDelta":mapView.region.span.latitudeDelta, "longDelta":mapView.region.span.longitudeDelta]
+        print("span done")
+        UserDefaults.standard.set(centerCoordinateDict, forKey: "centerCoordinate")
+        UserDefaults.standard.set(spanDict, forKey: "span")
+    }
 
 }
 
