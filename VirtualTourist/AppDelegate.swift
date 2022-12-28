@@ -10,28 +10,11 @@ import UIKit
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
-    let dataController = DataController(modelName: "VirtualTourist")
+    
     var window: UIWindow?
     
-    func checkIfFirstLaunch(){
-        if UserDefaults.standard.bool(forKey: "HasLaunchedBefore"){
-            print("app has launched beofre")
-        }
-        else
-        {
-            UserDefaults.standard.set(true, forKey: "HasLaunchedBefore")
-            UserDefaults.standard.set(false, forKey: "Slider Value Key")
-            UserDefaults.standard.synchronize()
-        }
-    }
 
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-        dataController.load()
-        checkIfFirstLaunch()
-        print(window)
-        let navigationController = window?.rootViewController as! UINavigationController
-        let mapViewController = navigationController.topViewController as! MapViewController
-        mapViewController.dataController = dataController
         
         
         return true
