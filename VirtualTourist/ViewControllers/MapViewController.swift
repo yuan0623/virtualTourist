@@ -7,9 +7,14 @@
 
 import UIKit
 import MapKit
+
 import CoreData
 
 class MapViewController: UIViewController, MKMapViewDelegate, NSFetchedResultsControllerDelegate {
+
+
+class MapViewController: UIViewController {
+
     
  
     @IBOutlet weak var mapView: MKMapView!
@@ -24,6 +29,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, NSFetchedResultsCo
         let longTapGesture = UILongPressGestureRecognizer(target: self, action: #selector(longTap))
         mapView.addGestureRecognizer(longTapGesture)
         // Do any additional setup after loading the view.
+
         restoreMapViewState()
         
         let fetchRequest:NSFetchRequest<Pin> = Pin.fetchRequest()
@@ -38,17 +44,44 @@ class MapViewController: UIViewController, MKMapViewDelegate, NSFetchedResultsCo
                 annotations.append(annotation)
             }
             
+
+        if let centerCoordinateDict = UserDefaults.standard.dictionary(forKey: "centerCoordinate"){
+            mapView.region.center.latitude = centerCoordinateDict["lati"] as! CLLocationDegrees
+            mapView.region.center.longitude = centerCoordinateDict["long"] as! CLLocationDegrees
+            print("CenterCoordinate is assigned in viewWillAppear")
+        }
+        if let span = UserDefaults.standard.dictionary(forKey: "span"){
+            mapView.region.span.latitudeDelta = span["latiDelta"] as! CLLocationDegrees
+            mapView.region.span.longitudeDelta = span["longDelta"] as! CLLocationDegrees
+
         }
         self.mapView.addAnnotations(annotations)
         
     }
     
+
     @objc func longTap(sender: UIGestureRecognizer){
         print("long tap")
         if sender.state == .began {
             let locationInView = sender.location(in: mapView)
             let locationOnMap = mapView.convert(locationInView, toCoordinateFrom: mapView)
             addAnnotation(location: locationOnMap)
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        //if let cameraBoundary = UserDefaults.standard.getCameraBoundary(){
+        //    mapView.cameraBoundary = cameraBoundary
+        //    print("cameraBoundary is assigned in viewWillAppear")
+        //}
+        if let centerCoordinateDict = UserDefaults.standard.dictionary(forKey: "centerCoordinate"){
+            mapView.region.center.latitude = centerCoordinateDict["lati"] as! CLLocationDegrees
+            mapView.region.center.longitude = centerCoordinateDict["long"] as! CLLocationDegrees
+            print("CenterCoordinate is assigned in viewWillAppear")
+        }
+        if let span = UserDefaults.standard.dictionary(forKey: "span"){
+            mapView.region.span.latitudeDelta = span["latiDelta"] as! CLLocationDegrees
+            mapView.region.span.longitudeDelta = span["longDelta"] as! CLLocationDegrees
+
         }
     }
 
@@ -79,7 +112,16 @@ class MapViewController: UIViewController, MKMapViewDelegate, NSFetchedResultsCo
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+
         saveMapViewState()
+
+        var centerCoordinateDict: [String: Double] = ["lati":mapView.region.center.latitude,"long":mapView.region.center.longitude]
+        print("center done")
+        var spanDict: [String: Double] = ["latiDelta":mapView.region.span.latitudeDelta, "longDelta":mapView.region.span.longitudeDelta]
+        print("span done")
+        UserDefaults.standard.set(centerCoordinateDict, forKey: "centerCoordinate")
+        UserDefaults.standard.set(spanDict, forKey: "span")
+
 
         print("map view disappear")
 
