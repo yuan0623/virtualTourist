@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FF4EA62F295B905600C1BCEF /* photoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4EA62E295B905600C1BCEF /* photoViewController.swift */; };
+		FF4EA631295B9AD900C1BCEF /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4EA630295B9AD900C1BCEF /* DataController.swift */; };
 		FF9736722953B0CE00D896A4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF9736712953B0CE00D896A4 /* AppDelegate.swift */; };
 		FF9736742953B0CE00D896A4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF9736732953B0CE00D896A4 /* SceneDelegate.swift */; };
 		FF9736762953B0CE00D896A4 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF9736752953B0CE00D896A4 /* MapViewController.swift */; };
@@ -17,6 +19,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		FF4EA62E295B905600C1BCEF /* photoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = photoViewController.swift; sourceTree = "<group>"; };
+		FF4EA630295B9AD900C1BCEF /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		FF97366E2953B0CE00D896A4 /* VirtualTourist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VirtualTourist.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF9736712953B0CE00D896A4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FF9736732953B0CE00D896A4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -74,6 +78,7 @@
 			isa = PBXGroup;
 			children = (
 				FF9736752953B0CE00D896A4 /* MapViewController.swift */,
+				FF4EA62E295B905600C1BCEF /* photoViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -82,6 +87,7 @@
 			isa = PBXGroup;
 			children = (
 				FF9736872953B43700D896A4 /* VirtualTourist.xcdatamodeld */,
+				FF4EA630295B9AD900C1BCEF /* DataController.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -157,6 +163,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FF4EA62F295B905600C1BCEF /* photoViewController.swift in Sources */,
+				FF4EA631295B9AD900C1BCEF /* DataController.swift in Sources */,
 				FF9736892953B43700D896A4 /* VirtualTourist.xcdatamodeld in Sources */,
 				FF9736762953B0CE00D896A4 /* MapViewController.swift in Sources */,
 				FF9736722953B0CE00D896A4 /* AppDelegate.swift in Sources */,

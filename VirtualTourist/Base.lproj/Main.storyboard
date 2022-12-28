@@ -6,6 +6,7 @@
         <capability name="Map view configurations" minToolsVersion="14.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -34,11 +35,69 @@
                     <navigationItem key="navigationItem" id="a0D-Od-DRO"/>
                     <connections>
                         <outlet property="mapView" destination="oU1-ai-wvE" id="Ve2-BO-pAQ"/>
+                        <segue destination="eyI-7m-HSe" kind="show" identifier="showPhotoView" id="sDr-q1-UKn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="101.5267175572519" y="3.5211267605633805"/>
+            <point key="canvasLocation" x="76" y="4"/>
+        </scene>
+        <!--Photo View Controller-->
+        <scene sceneID="JAp-Bi-zE3">
+            <objects>
+                <viewController id="eyI-7m-HSe" customClass="photoViewController" customModule="VirtualTourist" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="MyM-ug-leJ">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="p9d-jx-2Dy">
+                                <rect key="frame" x="0.0" y="103" width="393" height="223"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="223" id="zd1-QE-iqx"/>
+                                </constraints>
+                                <standardMapConfiguration key="preferredConfiguration"/>
+                            </mapView>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="1j7-T6-FgP">
+                                <rect key="frame" x="0.0" y="334" width="393" height="466"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="O9J-My-ld4">
+                                    <size key="itemSize" width="128" height="128"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="0tg-DK-zrl">
+                                        <rect key="frame" x="0.0" y="0.0" width="127.99999999999997" height="128"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="OzW-ad-CB9">
+                                            <rect key="frame" x="0.0" y="0.0" width="127.99999999999997" height="128"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </collectionViewCellContentView>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Lz0-R2-jDg"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="p9d-jx-2Dy" firstAttribute="leading" secondItem="Lz0-R2-jDg" secondAttribute="leading" id="5aV-3F-uDx"/>
+                            <constraint firstItem="1j7-T6-FgP" firstAttribute="leading" secondItem="Lz0-R2-jDg" secondAttribute="leading" id="Cof-dn-gJr"/>
+                            <constraint firstItem="1j7-T6-FgP" firstAttribute="top" secondItem="p9d-jx-2Dy" secondAttribute="bottom" constant="8" symbolic="YES" id="WgT-sM-i5E"/>
+                            <constraint firstItem="Lz0-R2-jDg" firstAttribute="bottom" secondItem="1j7-T6-FgP" secondAttribute="bottom" constant="18" id="fvh-2c-aZl"/>
+                            <constraint firstItem="Lz0-R2-jDg" firstAttribute="trailing" secondItem="p9d-jx-2Dy" secondAttribute="trailing" id="lD4-Fu-6QR"/>
+                            <constraint firstItem="Lz0-R2-jDg" firstAttribute="trailing" secondItem="1j7-T6-FgP" secondAttribute="trailing" id="p3s-wL-ODK"/>
+                            <constraint firstItem="p9d-jx-2Dy" firstAttribute="top" secondItem="Lz0-R2-jDg" secondAttribute="top" id="tPY-Q5-bJH"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="ne6-5j-VFl"/>
+                    <connections>
+                        <outlet property="mapView" destination="p9d-jx-2Dy" id="eCi-6J-xH1"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="N6G-M3-aoI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="916.79389312977094" y="3.5211267605633805"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="UKb-Ij-UVe">
@@ -49,7 +108,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="hcw-l8-Gq6"/>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="Bcm-RJ-hRm"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c8R-WR-nTp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
