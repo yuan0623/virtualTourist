@@ -10,6 +10,7 @@ import MapKit
 import CoreData
 
 class MapViewController: UIViewController, MKMapViewDelegate, NSFetchedResultsControllerDelegate {
+
     
  
     @IBOutlet weak var mapView: MKMapView!
@@ -24,6 +25,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, NSFetchedResultsCo
         let longTapGesture = UILongPressGestureRecognizer(target: self, action: #selector(longTap))
         mapView.addGestureRecognizer(longTapGesture)
         // Do any additional setup after loading the view.
+
         restoreMapViewState()
         
         let fetchRequest:NSFetchRequest<Pin> = Pin.fetchRequest()
@@ -38,6 +40,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, NSFetchedResultsCo
                 annotations.append(annotation)
             }
             
+
         }
         self.mapView.addAnnotations(annotations)
         
@@ -49,6 +52,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, NSFetchedResultsCo
             let locationInView = sender.location(in: mapView)
             let locationOnMap = mapView.convert(locationInView, toCoordinateFrom: mapView)
             addAnnotation(location: locationOnMap)
+
         }
     }
 
@@ -80,6 +84,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, NSFetchedResultsCo
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         saveMapViewState()
+
 
         print("map view disappear")
 
