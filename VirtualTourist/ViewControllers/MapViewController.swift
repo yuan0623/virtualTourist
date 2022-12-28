@@ -19,15 +19,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, NSFetchedResultsCo
     var dataController:DataController!
     var annotations = [MKPointAnnotation]()
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        mapView.delegate = self
-        let longTapGesture = UILongPressGestureRecognizer(target: self, action: #selector(longTap))
-        mapView.addGestureRecognizer(longTapGesture)
-        // Do any additional setup after loading the view.
-
-        restoreMapViewState()
-        
+    fileprivate func getPins() {
         let fetchRequest:NSFetchRequest<Pin> = Pin.fetchRequest()
         let sortDescriptor = NSSortDescriptor(key: "creationDate", ascending: false)
         fetchRequest.sortDescriptors = [sortDescriptor]
@@ -40,9 +32,21 @@ class MapViewController: UIViewController, MKMapViewDelegate, NSFetchedResultsCo
                 annotations.append(annotation)
             }
             
-
+            
         }
         self.mapView.addAnnotations(annotations)
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        mapView.delegate = self
+        let longTapGesture = UILongPressGestureRecognizer(target: self, action: #selector(longTap))
+        mapView.addGestureRecognizer(longTapGesture)
+        // Do any additional setup after loading the view.
+
+        restoreMapViewState()
+        
+        getPins()
         
     }
     
@@ -57,25 +61,25 @@ class MapViewController: UIViewController, MKMapViewDelegate, NSFetchedResultsCo
     }
 
     func addAnnotation(location: CLLocationCoordinate2D){
-        
+
         let pin = Pin(context: dataController.viewContext)
         pin.creationDate = Date()
         pin.longitude = location.longitude
         pin.latitude = location.latitude
+
         try? dataController.viewContext.save()
         
         let annotation = MKPointAnnotation()
         annotation.coordinate.latitude = pin.latitude
         annotation.coordinate.longitude = pin.longitude
+
         self.mapView.addAnnotation(annotation)
-            //annotation.title = "Some Title"
-            //annotation.subtitle = "Some Subtitle"
-            //self.mapView.addAnnotation(annotation)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         restoreMapViewState()
+        getPins()
         print("map view appear")
     }
     
@@ -133,17 +137,23 @@ func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnota
     }
     return pinView
 }
+    
+override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    if segue.identifier == "showPhotoView"{
+        let photoViewController = segue.destination as! photoViewController
+            
+        let sendingInfo = sender as! CLLocationCoordinate2D
+        photoViewController.pinCoordinate = sendingInfo
+        
+    }
+}
 
 func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
     print("tapped on pin ")
+    
+    var sendingMessage:CLLocationCoordinate2D
+    sendingMessage = view.annotation!.coordinate
+    performSegue(withIdentifier: "showPhotoView", sender: sendingMessage)
 }
 
-func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
-    if control == view.rightCalloutAccessoryView {
-        if let doSomething = view.annotation?.title! {
-            print("do something")
-            performSegue(withIdentifier: "showPhotoView", sender: nil)
-        }
-    }
-  }
 }
