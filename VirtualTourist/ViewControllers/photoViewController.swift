@@ -16,6 +16,7 @@ class photoViewController: UIViewController, MKMapViewDelegate {
         mapView.delegate = self
         restoreMapViewState()
         getSelectedPin()
+        flickrClient.getPhotosURL(page: 1, latitude: pinCoordinate.latitude as! Double, longitude: pinCoordinate.longitude as! Double, completion:handlegetPhotoURL)
         // Do any additional setup after loading the view.
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -40,6 +41,23 @@ class photoViewController: UIViewController, MKMapViewDelegate {
         let annotation = MKPointAnnotation()
         annotation.coordinate = pinCoordinate
         self.mapView.addAnnotation(annotation)
+    }
+    
+    func handlegetPhotoURL(sucess:Bool, error:Error?){
+        if sucess{
+            
+        }
+        else{
+            showAlert(title:"No valid photo URL", message: error!.localizedDescription)
+
+        }
+        
+    }
+    func showAlert(title:String, message:String){
+        let alertVC = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alertVC.addAction(UIAlertAction(title: "OK", style: .default,handler:nil))
+        self.present(alertVC,animated: true)
+        
     }
     
     /*
@@ -74,3 +92,7 @@ extension photoViewController{
         return pinView
     }
 }
+
+
+
+

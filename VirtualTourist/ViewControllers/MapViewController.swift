@@ -31,8 +31,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, NSFetchedResultsCo
                 annotation.coordinate = coordinate
                 annotations.append(annotation)
             }
-            
-            
         }
         self.mapView.addAnnotations(annotations)
     }
@@ -43,11 +41,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, NSFetchedResultsCo
         let longTapGesture = UILongPressGestureRecognizer(target: self, action: #selector(longTap))
         mapView.addGestureRecognizer(longTapGesture)
         // Do any additional setup after loading the view.
-
         restoreMapViewState()
-        
         getPins()
-        
     }
     
     @objc func longTap(sender: UIGestureRecognizer){
@@ -56,23 +51,18 @@ class MapViewController: UIViewController, MKMapViewDelegate, NSFetchedResultsCo
             let locationInView = sender.location(in: mapView)
             let locationOnMap = mapView.convert(locationInView, toCoordinateFrom: mapView)
             addAnnotation(location: locationOnMap)
-
         }
     }
 
     func addAnnotation(location: CLLocationCoordinate2D){
-
         let pin = Pin(context: dataController.viewContext)
         pin.creationDate = Date()
         pin.longitude = location.longitude
         pin.latitude = location.latitude
-
         try? dataController.viewContext.save()
-        
         let annotation = MKPointAnnotation()
         annotation.coordinate.latitude = pin.latitude
         annotation.coordinate.longitude = pin.longitude
-
         self.mapView.addAnnotation(annotation)
     }
     
@@ -80,7 +70,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, NSFetchedResultsCo
         super.viewWillAppear(animated)
         restoreMapViewState()
         getPins()
-        print("map view appear")
     }
     
     
